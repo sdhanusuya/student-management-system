@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Management System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+
+    /* Classroom Background Image */
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.12)
+        ),
+        url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1920&q=85");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+/* Main Dashboard */
+.container {
+    width: 100%;
+    max-width: 910px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.logo {
+    font-size: 45px;
+}
+
+h1 {
+    margin: 0 0 8px;
+    color: #12305a;
+    font-size: 30px;
+}
+
+header p {
+    margin: 0;
+    color: #657994;
+}
+
+/* Add Student Form */
+.add-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #d6e0ed;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2878ed;
+    box-shadow: 0 0 0 3px #e5efff;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 13px 18px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.add-btn {
+    background: #2878ed;
+    white-space: nowrap;
+}
+
+/* Total Students */
+.summary {
+    background: #eaf3ff;
+    border: 1px solid #d2e3fa;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.summary-icon {
+    font-size: 40px;
+}
+
+.summary-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #526b8e;
+}
+
+#totalStudents {
+    font-size: 38px;
+    font-weight: bold;
+    color: #2878ed;
+    margin-top: 5px;
+}
+
+/* Student Records */
+h2 {
+    color: #12305a;
+    margin-bottom: 18px;
+    font-size: 25px;
+}
+
+.student {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #dce5ef;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.number {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #dceaff;
+    color: #2878ed;
+    font-weight: bold;
+}
+
+.student-name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-weight: bold;
+    color: #17365d;
+    font-size: 17px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    background: #079b8b;
+}
+
+.delete-btn {
+    background: #ed4c58;
+}
+
+#emptyMessage {
+    text-align: center;
+    color: #718096;
+    padding: 15px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #657994;
+    border-top: 1px solid #dce5ef;
+    margin-top: 25px;
+    padding-top: 20px;
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .logo {
+        font-size: 34px;
+    }
+
+    .add-form {
+        flex-direction: column;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+    .student {
+        flex-wrap: wrap;
+    }
+
+    .actions {
+        width: 100%;
+        margin-left: 55px;
+    }
+
+    .actions button {
+        flex: 1;
+        padding: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+    <header>
+        <div class="logo">🎓</div>
+        <div>
+            <h1>Student Management System</h1>
+            <p>Manage your student records easily</p>
+        </div>
+    </header>
+
+    <form class="add-form" id="studentForm">
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter student name"
+            maxlength="100"
+            required
+        >
+
+        <button type="submit" class="add-btn" id="submitBtn">
+            ＋ Add Student
+        </button>
+    </form>
+
+    <section class="summary">
+        <div class="summary-icon">👥</div>
+        <div>
+            <div class="summary-label">Total Students</div>
+            <div id="totalStudents">0</div>
+        </div>
+    </section>
+
+    <h2>📋 Student Records</h2>
+
+    <div id="studentList"></div>
+
+    <p id="emptyMessage">No students added yet.</p>
+
+    <footer>
+        🎓 Student Management System | Student Project
+    </footer>
+
+</main>
+
+<script>
+const form = document.getElementById("studentForm");
+const nameInput = document.getElementById("studentName");
+const submitBtn = document.getElementById("submitBtn");
+const studentList = document.getElementById("studentList");
+const totalStudents = document.getElementById("totalStudents");
+const emptyMessage = document.getElementById("emptyMessage");
+
+let students = [
+    { id: 1, name: "dhanusuya" },
+    { id: 2, name: "Priya" }
+];
+
+let editingId = null;
+let nextId = 3;
+
+/* Load saved student records */
+try {
+    const saved = localStorage.getItem("classStudents");
+
+    if (saved !== null) {
+        const data = JSON.parse(saved);
+
+        if (
+            Array.isArray(data) &&
+            data.every(s =>
+                s &&
+                Number.isInteger(s.id) &&
+                typeof s.name === "string"
+            )
+        ) {
+            students = data;
+
+            nextId = students.reduce(
+                (max, s) => Math.max(max, s.id), 0
+            ) + 1;
+        }
+    }
+} catch (error) {
+    console.log("Could not load saved records.");
+}
+
+/* Save students in browser */
+function saveStudents() {
+    try {
+        localStorage.setItem(
+            "classStudents",
+            JSON.stringify(students)
+        );
+    } catch (error) {
+        alert("Unable to save records in this browser.");
+    }
+}
+
+/* Display student records */
+function renderStudents() {
+    studentList.replaceChildren();
+
+    totalStudents.textContent = students.length;
+
+    emptyMessage.style.display =
+        students.length === 0 ? "block" : "none";
+
+    students.forEach((student, index) => {
+        const row = document.createElement("div");
+        row.className = "student";
+
+        const number = document.createElement("div");
+        number.className = "number";
+        number.textContent = index + 1;
+
+        const name = document.createElement("div");
+        name.className = "student-name";
+        name.textContent = student.name;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        /* Edit Button */
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "edit-btn";
+        edit.textContent = "✎ Edit";
+
+        edit.addEventListener("click", () => {
+            nameInput.value = student.name;
+            editingId = student.id;
+            submitBtn.textContent = "Update Student";
+            nameInput.focus();
+        });
+
+        /* Delete Button */
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "delete-btn";
+        remove.textContent = "▤ Delete";
+
+        remove.addEventListener("click", () => {
+            if (confirm("Delete " + student.name + "?")) {
+                students = students.filter(
+                    s => s.id !== student.id
+                );
+
+                if (editingId === student.id) {
+                    resetForm();
+                }
+
+                saveStudents();
+                renderStudents();
+            }
+        });
+
+        actions.append(edit, remove);
+        row.append(number, name, actions);
+        studentList.appendChild(row);
+    });
+}
+
+/* Reset form */
+function resetForm() {
+    editingId = null;
+    nameInput.value = "";
+    submitBtn.textContent = "＋ Add Student";
+}
+
+/* Add or Update Student */
+form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = nameInput.value.trim();
+
+    if (!name) {
+        alert("Please enter a student name.");
+        return;
+    }
+
+    if (editingId !== null) {
+        const student = students.find(
+            s => s.id === editingId
+        );
+
+        if (student) {
+            student.name = name;
+        }
+    } else {
+        students.push({
+            id: nextId++,
+            name: name
+        });
+    }
+
+    saveStudents();
+    resetForm();
+    renderStudents();
+});
+
+/* Initial display */
+renderStudents();
+</script>
+
+</body>
+</html>
